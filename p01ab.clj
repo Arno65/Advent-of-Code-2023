@@ -10,7 +10,7 @@
 ;;;;    (cl) by Arno Jacobs, 2023-12-01
 ;;;;    
 
-(ns AoC2023-day1
+(ns p01ab
   (:require [clojure.string :as str]))
 
 ;;;; First - read the data-set
