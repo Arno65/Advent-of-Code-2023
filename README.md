@@ -9,9 +9,9 @@ Most of the time that will be Haskell.
 Spoiler alert: All code has the final results of the tasks in the comment section at the beginning of the code.
 Also note that these final results are obtained with the puzzle input from my Advent-of-Code-2023 account.
 
-Day 1 has solutions in Haskell and Clojure.\
+Day 1 and 2 have solutions in Haskell and Clojure.\
 
-Day 2, 3 and 4 have  solutions in Haskell.
+Day 3 and 4 have solutions in Haskell.
 
 W.i.p.:
 Will work on more CLojure solutions in the near future.
