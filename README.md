@@ -13,3 +13,7 @@ Day 1 has solutions in Haskell and Clojure.\
 
 Day 2, 3 and 4 have  solutions in Haskell.
 
+W.i.p.:
+Will work on more CLojure solutions in the near future.
+
+Happy coding!
