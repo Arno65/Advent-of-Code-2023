@@ -1,6 +1,6 @@
 # Advent-of-Code-2023
 
-This repository contains most of my solutions for [Advent of Code](https://adventofcode.com) 2023.
+This repository contains most of my solutions for [Advent of Code](https://adventofcode.com) 2023.\
 My main programming language is Haskell. I'll also do some work in Clojure.
 
 For collecting the stars I will first code the solution in the language that works best for me. 
