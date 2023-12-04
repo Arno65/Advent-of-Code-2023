@@ -1,4 +1,4 @@
-;;;;    Advent of Code 2022 - Day 1 part One and Two
+;;;;    Advent of Code 2023 - Day 1 part One and Two
 ;;;;    https://adventofcode.com/2023/day/1
 ;;;;
 ;;;;    Solutions in Clojure
@@ -9,16 +9,6 @@
 ;;;;
 ;;;;    (cl) by Arno Jacobs, 2023-12-01
 ;;;;    
-
-;;; Refactor with the help of (https://clojuredocs.org/clojure.core/-%3E)
-;;; `->`  as  the "thread-first" macro and   
-;;;           the threaded value appears in each function call in the first position 
-;;;           in the argument list
-;;; '->>' as  the "thread-last" macro
-;;;           the threaded value appears in each function call in the final position 
-;;;           in the argument list
-;;; to help make code more readable by removing nesting.
-;;;
 
 (ns AoC2023-day1
   (:require [clojure.string :as str]))
