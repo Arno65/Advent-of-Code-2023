@@ -18,11 +18,12 @@
 ;;;           the threaded value appears in each function call in the final position 
 ;;;           in the argument list
 ;;; to help make code more readable by removing nesting.
+;;;
+
+(ns AoC2023-day1
+  (:require [clojure.string :as str]))
 
 ;;;; First - read the data-set
-;;;
-(require ['clojure.string :as 'str])
-
 (defn get-lines [file]
   (->> file
        slurp
