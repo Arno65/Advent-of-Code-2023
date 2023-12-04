@@ -7,6 +7,7 @@
 --
 -- (cl) by Arno Jacobs, 2023-12-04
 
+
 -- Slow recursive algorithm.
 -- RUN compiled version! That will take about a second.
 
@@ -94,14 +95,13 @@ countScratchcards cards = countCards cardTree
     where
         countHelp   = prepCountScratchcards cards
         cardTree    = Branches [ cardInTree card countHelp | (_,card) <- countHelp ]
-        mswap = map (\(a,b) ->  (b,a))
 
 main :: IO ()
 main = do   putStrLn "Advent of Code 2023 - day 4  (Haskell)"
-            day4 <- lines <$> readFile filename
+            cards <- lines <$> readFile filename
             putStr   "The total amount of points of all cards is:   "
-            print $ scoreCards day4
+            print $ scoreCards cards
             putStr   "The total amount of scratchcards is:        "
-            print $ countScratchcards day4
+            print $ countScratchcards cards
             putStrLn "0K.\n"
 
