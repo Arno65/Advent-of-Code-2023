@@ -11,9 +11,9 @@
 -- A compiled version with the Not-So-Intelligent brute force solution needs 8+ minutes to run
 -- Brute force as finding ALL locations for ALL seeds
 --
--- I haven't found a more efficient smarter solution yet :-(
+-- Haven't found the smarter solution yet :-(
 
-
+-- 
 module AoC2023d05ab where
 
 import Data.Char
@@ -24,7 +24,9 @@ import Data.List.Split
 filename :: String
 filename = "data/inputDay05_2023.txt"
 
+
 cSpace = ' ' :: Char
+
 
 type Mapping        = (Int,Int,Int)
 type MappingList    = [Mapping]
@@ -127,14 +129,14 @@ lowestLocationOnRange' mappings (startSeed:range:remainingSeedRanges) locations 
 main :: IO ()
 main = do   putStrLn "Advent of Code 2023 - day 5  (Haskell)"
             ( seeds, mappings ) <- parseAlmanac <$> lines <$> readFile filename
-            putStrLn "The lowest location number that corresponds"
-            putStrLn "to any of the initial seed numbers"
-            putStr " Part 1: "
+            putStr "The lowest location number based on initial seed numbers:   "
             print $ lowestLocation mappings seeds
 
-            putStr " Part 2:   "
--- This one will take 8+ minutes on my MacBook Air M1 (the M2 is 10% faster)
+            putStr "The lowest location number based on ranges of seed numbers:   "
+-- This one will take 8+ minutes on my MacBook Air M1 (the M2 is 10% faster)         
+-- The seed with the lowest location is: 4076319163
             print $ lowestLocationOnRange mappings seeds
 
             putStrLn "0K.\n"
+
 
