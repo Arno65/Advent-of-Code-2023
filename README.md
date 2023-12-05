@@ -11,10 +11,10 @@ Also note that these final results are obtained with the puzzle input from my Ad
 
 Day 1 and 2 have solutions in Haskell and Clojure.
 
-Day 3,4 and 5 have solutions in Haskell.
+Day 3, 4 and 5 have solutions in Haskell.
 
 W.i.p.:
-Part 2 of day 5 has a slow brute force solution. There are more efficient solutions.
+Part 2 of day 5 has a slow brute force solution. There are more efficient solutions.\
 Will work on more Clojure solutions in the near future.
 
 Happy coding!
