@@ -82,14 +82,14 @@
 
 ;;; The 'main' program - - -
 (defn program []
-  (println "Advent of Code 2023 - day 1  (Clojure)")
+  (println "Advent of Code 2023 - day 2  (Clojure)")
   (print   "The sum of possible game ID is:       ")
   (println (summed-possible-games data-set))
   (print   "The sum of the power of all sets is: ")
   (println (find-powers data-set))
   (println "0K.\n"))
 
-;; Run in terminal via: clojure -M p01ab.clj
+;; Run in terminal via: clojure -M p02ab.clj
 (program)
 
 
