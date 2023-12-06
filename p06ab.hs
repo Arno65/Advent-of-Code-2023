@@ -5,6 +5,7 @@
 -- The product of all winings is:           1624896
 -- The product of the big race winings is: 32583852
 --
+--
 -- (cl) by Arno Jacobs, 2023-12-06
 
 module AoC2023d06ab where
@@ -39,12 +40,25 @@ parseInts :: String -> [String] -> [Int]
 parseInts token = concat . map getInts . filter (inLine token)
 
 -- Part 1
-travelDistance :: Int -> Int -> Int
-travelDistance totalTime chargeTime = chargeTime * (max 0 (totalTime - chargeTime))
+
+-- ABC formula with Int inputs and [Double] output
+abcInt :: Int -> Int -> Int -> [Double]
+abcInt a b c    | d < 0     = []
+                | d == 0    = [ minB / twoA ]
+                | otherwise = [ (minB - sqrtD) / twoA, (minB + sqrtD) / twoA ]
+    where
+        twoA    = 2 * fromIntegral a
+        minB    = - fromIntegral b
+        cDbl    = fromIntegral c
+        d       = minB * minB - 2 * twoA * cDbl
+        sqrtD   = sqrt d
 
 countWins :: (Int,Int) -> Int
-countWins ( time, distance ) = sum [ 1 |    chargeTime <- [1..time-1],
-                                            distance < travelDistance time chargeTime ]
+countWins ( time, distance ) 
+    | length solutions < 2  = 0
+    | otherwise             = floor (head solutions) - floor (last solutions) 
+        where
+            solutions   = abcInt (-1) time (-distance)
 
 productAllWinnings :: [Int] -> [Int] -> Int
 productAllWinnings time = product . map countWins . zip time 
@@ -69,3 +83,5 @@ main = do   putStrLn "Advent of Code 2023 - day 6  (Haskell)"
             print $ productAllWinnings bigTime bigDistance
             
             putStrLn "0K.\n"
+
+

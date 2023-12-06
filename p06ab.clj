@@ -9,8 +9,10 @@
 ;;;;
 ;;;;    (cl) by Arno Jacobs, 2023-12-06
 ;;;;    
+;;;; https://github.com/Arno65/Advent-of-Code-2023/blob/main/p06ab.clj
 
-(ns p06ab)
+(ns p06ab
+  (:require [clojure.math :as m]))
 
 ;;; Race data - part 1
 (def times     '(56   97   78   75))
@@ -20,15 +22,34 @@
 (def big-time     '(       56977875))
 (def big-distance '(546192711311139))
 
+;;;; Using abc-formula for solving quadratic formula 
+;;;; Solve:   - dt^2 + time * dt = distance
+;;;; count-wins = floor (dt_high) - floor (dt_low)
+;;;
+(defn discriminant [a b c]
+  (- (* b b) (* 4 a c)))
 
-(defn travel-distance [total-time charge-time]
-  (* charge-time (- total-time charge-time)))
+(defn abc [a b c]
+  (let [d (discriminant a b c)
+        two-a (* 2 a)
+        minus-b (- b)
+        sqrt-d (m/sqrt d)]
+      (cond
+       (< d 0) nil
+       (= d 0) (list (/ minus-b two-a))
+       :else 
+       (list (/ (+ minus-b sqrt-d) two-a)
+             (/ (- minus-b sqrt-d) two-a)))))
 
-(defn count-wins [time distance] 
-  (reduce + (for [charge-time (range 1 (- time 1))
-        :let [counter (if (< distance (travel-distance time charge-time)) 1 0)]] 
-    counter)))
-              
+(defn count-wins [time distance]
+  (let [solutions (map #(m/floor %) (abc -1 time (- distance)))]
+    (if (= 2 (count solutions))
+      (-> (- (last solutions)
+             (first solutions))
+          abs
+          int)
+      0)))
+  
 (defn work-count-wins [times distances]
   (if (= 0 (count times))
     nil
@@ -51,4 +72,6 @@
 
 ;; Run in terminal via: clojure -M p06ab.clj
 (program)
+
+;;; "Elapsed time: 0.628375 msecs"
 
