@@ -84,7 +84,7 @@ getIndex :: Eq a => [a] -> a -> Int
 getIndex testList testElement   | matches == [] = -1
                                 | otherwise     = snd $ head matches
     where
-        matches = filter (\(element,_) -> element == testElement) $ zip testList [0..]
+        matches = filter ((== testElement) . fst) $ zip testList [0..]
 
 countSets :: Ord a => [a] -> [Int]
 countSets = sort . countSets' . sort
@@ -141,8 +141,8 @@ getBestHand cards   | cards == jokers   = "22222"   -- or "AAAAA", it doesn't ma
                     | jokers == []      = cards
                     | otherwise         = bestHand
     where
-        jokers      = filter (\card -> card == cJoker) cards 
-        rest        = filter (\card -> card /= cJoker) cards 
+        jokers      = filter (== cJoker) cards 
+        rest        = filter (/= cJoker) cards 
         bestCard    = (snd . head . sortTallyCards . tallyList) rest
         bestHand    = [ newCard |   card <- cards, 
                                     let newCard = if card == cJoker then bestCard else card ]
