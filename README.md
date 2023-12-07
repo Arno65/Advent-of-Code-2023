@@ -19,7 +19,6 @@ Day 7 has a solution in Haskell.
 
 W.i.p.:\
 Part 2 of day 5 has a slow brute force solution. (There is a more efficient solution.)\
-Day 7, adding an ordered Data type for the cards will improve the code. It will result in elegant sorting.\
 Will work on more Clojure solutions in the near future.
 
 Happy coding!
