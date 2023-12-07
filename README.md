@@ -15,6 +15,8 @@ Day 3, 4 and 5 have solutions in Haskell.
 
 Day 6 has solutions in Haskell and Clojure.
 
+Day 6 has a solution in Haskell.
+
 W.i.p.:\
 Part 2 of day 5 has a slow brute force solution. (There is a more efficient solution.)\
 Will work on more Clojure solutions in the near future.
