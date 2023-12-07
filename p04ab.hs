@@ -84,7 +84,7 @@ cardInTree card cardsWinnings
         Branches [ CardNumber card,
             Branches [ cardInTree c cardsWinnings | c <- [card+1 .. card+count]]]
             where
-                count = fst . head $ filter (\(cnt,cnr) -> cnr == card ) cardsWinnings
+                count = (fst . head . filter ((== card) . snd )) cardsWinnings
 
 countCards :: CardTree -> Int
 countCards (CardNumber _)       = 1
