@@ -13,11 +13,6 @@ module AoC2023d07ab where
 import Data.List
 import Data.List.Split
 
--- Some initials
-filename :: String
-filename = "data/inputDay07_2023.txt"
-
-sSpace = " " :: String
 
 data Hand   =   FiveOfaKind 
             |   FourOfaKind
@@ -27,25 +22,63 @@ data Hand   =   FiveOfaKind
             |   OnePair
             |   HighCard
                 deriving (Eq,Ord,Show)
-     
--- Card strength from HIGH 'A' to low '2'     
-cardStrengthPart1 :: String
-cardStrengthPart1 = "AKQJT98765432"
 
-cardStrengthPart2 :: String
-cardStrengthPart2 = "AKQT98765432J"
+data CardPack1  = CP1_Ace | CP1_King | CP1_Queen | CP1_Jack 
+                | CP1_10 | CP1_9 | CP1_8 | CP1_7 | CP1_6 | CP1_5 | CP1_4 | CP1_3 | CP1_2 
+                | CP1_IllegalCard
+                    deriving (Eq,Ord,Show)
 
+type CardsPack1 = [CardPack1]
+
+data CardPack2  = CP2_Ace | CP2_King | CP2_Queen 
+                | CP2_10 | CP2_9 | CP2_8 | CP2_7 | CP2_6 | CP2_5 | CP2_4 | CP2_3 | CP2_2 
+                | CP2_Joker
+                | CP2_IllegalCard
+                    deriving (Eq,Ord,Show)
+
+type CardsPack2 = [CardPack2]
+
+-- Custom reader for both card packs
+--
+readCardPack1 :: Char -> CardPack1
+readCardPack1 '2'   = CP1_2
+readCardPack1 '3'   = CP1_3
+readCardPack1 '4'   = CP1_4
+readCardPack1 '5'   = CP1_5
+readCardPack1 '6'   = CP1_6
+readCardPack1 '7'   = CP1_7
+readCardPack1 '8'   = CP1_8
+readCardPack1 '9'   = CP1_9
+readCardPack1 'T'   = CP1_10
+readCardPack1 'J'   = CP1_Jack
+readCardPack1 'Q'   = CP1_Queen
+readCardPack1 'K'   = CP1_King
+readCardPack1 'A'   = CP1_Ace
+readCardPack1 _     = CP1_IllegalCard
+
+readCardPack2 :: Char -> CardPack2
+readCardPack2 'J'   = CP2_Joker
+readCardPack2 '2'   = CP2_2
+readCardPack2 '3'   = CP2_3
+readCardPack2 '4'   = CP2_4
+readCardPack2 '5'   = CP2_5
+readCardPack2 '6'   = CP2_6
+readCardPack2 '7'   = CP2_7
+readCardPack2 '8'   = CP2_8
+readCardPack2 '9'   = CP2_9
+readCardPack2 'T'   = CP2_10
+readCardPack2 'Q'   = CP2_Queen
+readCardPack2 'K'   = CP2_King
+readCardPack2 'A'   = CP2_Ace
+readCardPack2 _     = CP2_IllegalCard
+
+-- Some initials
+filename :: String
+filename = "data/inputDay07_2023.txt"
+
+sSpace = " " :: String
 cJoker = 'J' :: Char
 
-
-compareCardStrength :: String -> String -> String -> Int
-compareCardStrength cardsStrength card1 card2 
-    | cardsStrength1 <  cardsStrength2  = -1 
-    | cardsStrength1 >  cardsStrength2  =  1 
-    | cardsStrength1 == cardsStrength2  =  0 
-        where
-            cardsStrength1 = map (getIndex cardsStrength) card1 
-            cardsStrength2 = map (getIndex cardsStrength) card2
 
 getIndex :: Eq a => [a] -> a -> Int
 getIndex testList testElement   | matches == [] = -1
@@ -53,7 +86,7 @@ getIndex testList testElement   | matches == [] = -1
     where
         matches = filter (\(element,_) -> element == testElement) $ zip testList [0..]
 
-countSets :: String -> [Int]
+countSets :: Ord a => [a] -> [Int]
 countSets = sort . countSets' . sort
     where
         countSets' [] = []
@@ -64,8 +97,8 @@ countSets = sort . countSets' . sort
                 countSet setLength []       = ( 0, [] ) 
                 countSet setLength (x:xs)   = ( setLength, remainingSet )
                     where                                
-                        sameElements    = takeWhile (\c -> c == x) xs
-                        remainingSet    = dropWhile (\c -> c == x) xs
+                        sameElements    = takeWhile (== x) xs
+                        remainingSet    = dropWhile (== x) xs
                         setLength       = 1 + length sameElements
 
 getHand :: [Int] -> Hand
@@ -78,39 +111,26 @@ getHand hand    | hand == [5]       = FiveOfaKind
                 | otherwise         = HighCard 
 
 -- Quick REVERSE sort for hand strengths
-sortHands :: String -> [(Hand,(String,Int))] -> [(Hand,(String,Int))]
-sortHands _            []       = []
-sortHands cardStrength (h:hs)   = sortHands cardStrength bigger ++ [h] ++ sortHands cardStrength smaller
+sortHands :: Ord a => [( Hand, ( [a], Int ))] -> [( Hand, ( [a], Int ))]
+sortHands []        = []
+sortHands (h:hs)    = sortHands bigger ++ [h] ++ sortHands smaller
     where
-        smaller = filter (\th -> (compareHands cardStrength th h) == -1) hs
-        bigger  = filter (\th -> (compareHands cardStrength th h) >=  0) hs
-        -- 
-        compareHands cardStrength (h1,(hs1,_)) (h2,(hs2,_))
-            |   h1 < h2 
-            || (h1 == h2 && (compareCardStrength cardStrength hs1 hs2 == -1)) = -1
-            |   h1 > h2 
-            || (h1 == h2 && (compareCardStrength cardStrength hs1 hs2 ==  1)) =  1
-            | otherwise                                             =  0
+        smaller = filter (<  h) hs
+        bigger  = filter (>= h) hs
 
 -- Part 1
 
-parseHandPart1 :: String -> (Hand,(String,Int))
-parseHandPart1 cardsSet = ( getHand hand, (cards, read score ))
+parseHandPart1 :: String -> ( Hand, ( CardsPack1, Int ))
+parseHandPart1 cardsSet = ( getHand hand, (map readCardPack1 cards, read score ))
     where
         (cards:score:_) = splitOn sSpace cardsSet
         hand            = countSets cards
 
-totalWinnings :: [(Hand,(String,Int))] -> Int -> Int
-totalWinnings []                    _      = 0
-totalWinnings (hand:remainingHands) factor =
-    strength + totalWinnings remainingHands (factor + 1)
-        where
-            strength = factor * (snd . snd) hand
 
 -- Part 2
 
-parseHandPart2 :: String -> (Hand,(String,Int))
-parseHandPart2 cardsSet = ( getHand bestHand, (cards, read score ))
+parseHandPart2 :: String -> ( Hand, ( CardsPack2, Int ))
+parseHandPart2 cardsSet = ( getHand bestHand, (map readCardPack2 cards, read score ))
     where
         (cards:score:_) = splitOn sSpace cardsSet
         bestHand        = (countSets . getBestHand) cards
@@ -135,31 +155,33 @@ tallyList (e:es)    = [(count,e)] ++ tallyList (filter (/=e) es)
     where
         count   = 1 + length (filter (==e) es)
 
-sortTallyCards ::  [(Int,Char)] ->  [(Int,Char)]
+sortTallyCards :: Ord a =>  [(Int,a)] ->  [(Int,a)]
 sortTallyCards []           = []
-sortTallyCards (tally:rt)   = sortTallyCards  bigger ++ [tally] ++ sortTallyCards smaller
+sortTallyCards (tally:rt)   = sortTallyCards bigger ++ [tally] ++ sortTallyCards smaller
     where
-        smaller = filter (\tt -> (compareTally tt tally) == -1) rt
-        bigger  = filter (\tt -> (compareTally tt tally) >=  0) rt
-        --
-        compareTally (count1,card1) (count2,card2)
-            |   count1 <  count2
-            || (count1 == count2 && (compareCardStrength cardStrengthPart2 [card1] [card2] == -1))  = -1
-            |   count1 >  count2
-            || (count1 == count2 && (compareCardStrength cardStrengthPart2 [card1] [card2] ==  1))  =  1
-            | otherwise                                                                             =  0
+        smaller = filter (< tally) rt
+        bigger  = filter (> tally) rt
 
+-- Main code 
+
+totalWinnings :: [ ( Hand, ( [a], Int ))] -> Int -> Int
+totalWinnings []                    _      = 0
+totalWinnings (hand:remainingHands) factor =
+    strength + totalWinnings remainingHands (factor + 1)
+        where
+            strength = factor * (snd . snd) hand
 
 main :: IO ()
 main = do   putStrLn "Advent of Code 2023 - day 7  (Haskell)"
             cards <- lines <$> readFile filename
 
             putStr   "The total winnings (part 1): "
-            let part1 = (sortHands cardStrengthPart1) $ map parseHandPart1 cards
+            let part1 = sortHands $ map parseHandPart1 cards
             print $ totalWinnings part1 1
 
             putStr   "The total winnings (part 2): "
-            let part2 = (sortHands cardStrengthPart2) $ map parseHandPart2 cards
+            let part2 = sortHands $ map parseHandPart2 cards
             print $ totalWinnings part2 1
             putStrLn "0K.\n"
+
 
