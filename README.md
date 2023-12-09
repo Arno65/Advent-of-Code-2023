@@ -15,7 +15,7 @@ Day 3, 4 and 5 have solutions in Haskell.
 
 Day 6 has solutions in Haskell and Clojure.
 
-Day 7,8 and 9 have solution in Haskell.
+Day 7,8 and 9 have solution in Haskell. \
 I tried a Clojure solution for day 8 but a 'Stack overflow' and lack of knowledge prevents me writing a working version.
 
 W.i.p.:\
