@@ -70,7 +70,7 @@
   (println (work-past values))
   (println "0K.\n"))
 
-;; Run in terminal via: clojure -M p08ab.clj
+;; Run in terminal via: clojure -M p09ab.clj
 (program)
 
 
