@@ -50,8 +50,6 @@ workToFuture = sum . map calculateToFuture
 
 -- Part 2
 
--- "Je gaat het pas zien als je het door hebt." J.C.
---
 calculateToPast :: [Int] -> Int
 calculateToPast = subtracts . (allDeltasZeros Past [])
     where
