@@ -56,13 +56,8 @@
       new-border-values
       (all-past-delta-zeros new-border-values (deltas values)))))
 
-(defn extrapolate-past [sign current-value values]
-  (if (empty? values) 
-    (* sign current-value)
-    (extrapolate-past (- sign) (- (first values) current-value) (rest values))))
-                      
 (defn calculate-to-past [values]
-  (extrapolate-past -1 0 (reverse (all-past-delta-zeros nil values))))
+  (reduce #(- %2 %1) (all-past-delta-zeros nil values)))
 
 (defn work-past [values]
   (reduce + (map calculate-to-past values)))
