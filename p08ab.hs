@@ -48,8 +48,13 @@ countSteps' (navigate:remainingNavigation) nodes counter endPoint startPoint
     | otherwise                 = 
         countSteps' remainingNavigation nodes (counter+1) endPoint (getNextPoint navigate nodes startPoint)
 
+-- This node search is just a simple brute force search.
+-- Start looking at the beginning of the node-list and work your way up, time and time again.
+-- So it's NO binary search.
+-- That binary search version was build and it worked well BUT it took five times as long!
+-- 
 getPoint :: [Node] -> String -> Node
-getPoint []                                  _          = error "Dead link."
+getPoint []                                  _          = error "Dead link." -- there are none.
 getPoint ((source,direction):remainingNodes) startPoint 
     | source == startPoint  = (source,direction)
     | otherwise             = getPoint remainingNodes startPoint 
@@ -89,7 +94,7 @@ main = do   putStrLn "Advent of Code 2023 - day 8  (Haskell)"
             putStr   "The number of steps to reach the end (part 1):          "
             print $ countSteps network startPoint endPoint 
             putStr   "The number of steps to reach the end (part 2): "
-            print $ countGhostSteps network ghostStartPoint ghostEndPoint 
+            print $ countGhostSteps network ghostStartPoint ghostEndPoint             
             putStrLn "0K.\n"
 
 
