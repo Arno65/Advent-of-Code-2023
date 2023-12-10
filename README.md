@@ -20,6 +20,8 @@ I tried a Clojure solution for day 8 but a 'Stack overflow' and lack of knowledg
 
 Day 9 has solutions in Haskell and Clojure.
 
+Day 10 has a solution in Haskell, a very slow one for part 2. If you want to see some bad code, be my guest ;-)
+
 W.i.p.:\
 Part 2 of day 5 has a slow brute force solution. (There is a more efficient solution.)\
 Will work on more Clojure solutions in the near future.
