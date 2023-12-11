@@ -20,10 +20,11 @@ I tried a Clojure solution for day 8 but a 'Stack overflow' and lack of knowledg
 
 Day 9 has solutions in Haskell and Clojure.
 
-Day 10 has a solution in Haskell, a very slow one for part 2. If you want to see some bad code, be my guest ;-)
+Day 10 and 11 have solutions in Haskell. \
+Day 10 has a very slow one for part 2. If you want to see some bad code, be my guest ;-)
 
 W.i.p.:\
-Part 2 of day 5 has a slow brute force solution. (There is a more efficient solution.)\
+Both parts 2 of day 5 and 10 have very slow solutions. (There are more efficient solutions.)\
 Will work on more Clojure solutions in the near future.
 
 Happy coding!
