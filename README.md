@@ -29,6 +29,7 @@ Day 14 has a solution in Haskell.
 
 W.i.p.:\
 Both parts 2 of day 5 and 10 have very slow solutions. (There are more efficient solutions.)\
+Clean up code for days 12 and 13.
 Will work on more Clojure solutions in the near future.
 
 Happy coding!
