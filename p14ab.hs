@@ -7,7 +7,7 @@
 --
 -- (cl) by Arno Jacobs, 2023-12-14
 
--- module AoC2023d14ab where
+module AoC2023d14ab where
 
 import Data.List
 
@@ -88,16 +88,12 @@ nCycles :: Int -> [String] -> [String]
 nCycles count dish  | count < 2 = oneCycle dish 
                     | otherwise = nCycles (count - 1) (oneCycle dish)
 
-getModuloCycle :: [String] -> Int
-getModuloCycle startDish = getModuloCycle' cycle1 cycle1 
-    where
-        cycle1 = nCycles 101 startDish
-        --
-        getModuloCycle' firstCycle currentCycle 
-            | nextCycle == firstCycle   = 1
-            | otherwise                 = 1 + getModuloCycle' firstCycle nextCycle 
-                where
-                    nextCycle = oneCycle currentCycle
+getModuloCycle :: [String] -> [String] -> Int
+getModuloCycle firstCycle currentCycle 
+    | nextCycle == firstCycle   = 1
+    | otherwise                 = 1 + getModuloCycle firstCycle nextCycle 
+        where
+            nextCycle = oneCycle currentCycle
 
 totalLoadAfterCycle :: [String] -> Int
 totalLoadAfterCycle = sum . map (calculateLoad . reverse) . transpose
@@ -114,7 +110,7 @@ workMegaCycles ::  Int -> [String] -> Int
 workMegaCycles cycles dish = totalLoadAfterCycle $ nCycles remainingCycles dish' 
     where
         (startCycles,dish') = workToPattern dish [] 0
-        moduloCycles        = getModuloCycle dish'
+        moduloCycles        = getModuloCycle dish' dish'
         remainingCycles     = mod (cycles - startCycles) moduloCycles
 
 main :: IO ()
@@ -129,5 +125,4 @@ main = do   putStrLn "Advent of Code 2023 - day 14  (Haskell)"
             print $ workMegaCycles megaCycles dish
 
             putStrLn "0K.\n"
-
 
