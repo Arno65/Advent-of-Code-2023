@@ -25,7 +25,7 @@ Day 10 has a very slow one for part 2. If you want to see some bad code, be my g
 
 Due to too much other work, I didn't have time to do some clean coding on days 12 and 13.
 
-Day 14 has a solution in Haskell.\
+Day 14 has a solution in Haskell.
 
 W.i.p.:\
 Both parts 2 of day 5 and 10 have very slow solutions. (There are more efficient solutions.)\
