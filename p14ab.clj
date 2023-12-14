@@ -95,14 +95,6 @@
        reverse
        calculate-load))
 
-;;; Work the complete mirror, turn North anti-clockwise
-(defn total-load 
-  [mirror]
-  (->> mirror
-       transpose
-       (map roll-and-calculate-load)
-       (reduce +)))
-
 ;;; Part 2 
 
 ;;;; One cycle: North -> West -> South -> East
@@ -163,7 +155,7 @@
       (get-modulo-cycle start-cycle next-cycle (+ 1 modulo-counter)))))
 
 ;;; Calculate the total load after running all cycles 
-(defn total-load-after-all-cycles 
+(defn total-load
   [mirror]
   (->> mirror
        transpose
@@ -187,14 +179,14 @@
   (let [pattern-info (work-to-pattern-start mirror nil 0),
         current-mirror (first (rest pattern-info)),
         modulo-cycle (get-modulo-cycle current-mirror current-mirror 1),
-        remaining-cycles (mod (- cycles (first pattern-info)) modulo-cycle)]
-    (total-load-after-all-cycles (n-cycles remaining-cycles current-mirror))))
+        remaining-cycles (mod (- cycles (first pattern-info)) modulo-cycle)] 
+    (total-load (n-cycles remaining-cycles current-mirror))))
 
 ;;; The 'main' program - - -
 (defn program   []
   (println "Advent of Code 2023 - day 14 (Clojure)")
   (print   "The total load on the north support beams: ")
-  (println (total-load data-set))
+  (println (->> data-set roll-north total-load))
   (print   "The total load after ")
   (print mega-cycles)
   (print " cycles:     ")

@@ -54,10 +54,6 @@ seperateOn sep xs
 calculateLoad :: String -> Int
 calculateLoad xs = sum . map fst . filter ((== cRollingStone) . snd) $ zip [1..] xs 
     
--- Transpose the dish data - so the rolling stones will roll to the "west" (left)
--- Flip dish by reverse for easy indexing and calculating load
-totalLoad :: [String] -> Int
-totalLoad = sum . map (calculateLoad . reverse . rollLeft) . transpose
 
 
 -- Part 2
@@ -95,8 +91,8 @@ getModuloCycle firstCycle currentCycle
         where
             nextCycle = oneCycle currentCycle
 
-totalLoadAfterCycle :: [String] -> Int
-totalLoadAfterCycle = sum . map (calculateLoad . reverse) . transpose
+totalLoad :: [String] -> Int
+totalLoad = sum . map (calculateLoad . reverse) . transpose
 
 workToPattern :: [String] -> [[String]] -> Int -> (Int,[String])
 workToPattern dish previousDishes cycles    
@@ -107,7 +103,7 @@ workToPattern dish previousDishes cycles
             currentDishes   = [dish] ++ previousDishes
 
 workMegaCycles ::  Int -> [String] -> Int
-workMegaCycles cycles dish = totalLoadAfterCycle $ nCycles remainingCycles dish' 
+workMegaCycles cycles dish = totalLoad $ nCycles remainingCycles dish' 
     where
         (startCycles,dish') = workToPattern dish [] 0
         moduloCycles        = getModuloCycle dish' dish'
@@ -118,7 +114,7 @@ main = do   putStrLn "Advent of Code 2023 - day 14  (Haskell)"
             dish <- lines <$> readFile filename            
 
             putStr "The total load on the north support beams: "
-            print $ totalLoad dish
+            print $ totalLoad $ rollNorth dish
             putStr "The total load after "
             putStr $ show megaCycles
             putStr " cycles:     "
