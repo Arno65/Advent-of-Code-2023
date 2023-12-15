@@ -27,6 +27,8 @@ Due to too much other work, I didn't have time to do some clean coding on days 1
 
 Day 14 has solutions in Haskell and Clojure.
 
+Day 15 has a solution in Haskell.
+
 W.i.p.:\
 Both parts 2 of day 5 and 10 have very slow solutions. (There are more efficient solutions.)\
 Clean up code for days 12 and 13.
