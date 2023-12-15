@@ -7,6 +7,7 @@
 --
 -- (cl) by Arno Jacobs, 2023-12-14
 
+-- 
 module AoC2023d14ab where
 
 import Data.List
@@ -110,7 +111,7 @@ workMegaCycles cycles dish = totalLoad $ nCycles remainingCycles dish'
         remainingCycles     = mod (cycles - startCycles) moduloCycles
 
 main :: IO ()
-main = do   putStrLn "Advent of Code 2023 - day 14  (Haskell)"
+main = do   putStrLn "Advent of Code 2023 - day 14 (Haskell)"
             dish <- lines <$> readFile filename            
 
             putStr "The total load on the north support beams: "
