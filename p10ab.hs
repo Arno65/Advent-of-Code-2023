@@ -5,18 +5,16 @@
 -- From start to the farthest point on the loop: 6907
 -- The number of tiles enclosed by the loop:      541
 
--- My floodfill of part 2 is very very slow
--- It's a recursive floodfil, in Haskell.
--- Also because I had to extend the area by factor 3 iin every dimension
--- So the arean now has 176400 sub-tiles.
-
--- Compiled it takes ... hours to run part 2.
+-- I'm NOT happy with this program. Way too much code.
+--
+-- My floodfill of part 2 is still slow
+-- It's my own code but my Haskell knowledge is poor.
+-- Compiled it takes ~ 70+ seconds to run part 2.
 
 --
--- (cl) by Arno Jacobs, 2023-12-10
+-- (cl) by Arno Jacobs, 2023-12-10, 2023-12-18
 
--- 
-module AoC2023d10ab where
+-- module AoC2023d10ab where
 
     
 data Tile = NorthSouth  | EastWest  | 
@@ -44,8 +42,11 @@ readTile _      = NoTile
 
 -- Some initials
 filename :: String
+-- 
 filename = "data/inputDay10_2023.txt"
+-- filename = "data/inputDay10_2023_test.txt"
 
+cDot = '.' :: Char
 
 -- Helpers to create and work the maze and it's loop
 
@@ -202,52 +203,50 @@ bottomPartExtension SouthWest   = " # "
 bottomPartExtension _           = "   "
 
 clearTiles :: Position -> [String] -> [String]
-clearTiles startPosition plot = clearedPlot
+clearTiles startPosition plot = cleanPlot cleanedExterior plot
     where
-        clearedTiles    = clearTiles' [startPosition] [startPosition] maxRange plot 
-        clearedPlot     = clearPlot clearedTiles maxRange plot
-        maxRange        = getGridRange plot
+        markedTiles     = getLocations plot
+        cleanedExterior = floodFill (getGridRange plot) [startPosition] markedTiles 
 
--- Going massivly recursive
-clearTiles' :: [Position] -> [Position] -> Position -> [String] -> [Position]
-clearTiles' clearedTiles currentPositions mxy plot 
-    | nextCleared == [] = clearedTiles
-    | otherwise         = clearing
+getLocations :: [String] -> [Position]
+getLocations plot = [ (x,y) |   x <- [0..mx-1], 
+                                y <- [0..my-1], 
+                                plot !!y !!x == '#' ]
+    where
+        (mx,my) = getGridRange plot
+
+cleanPlot :: [Position] -> [String] -> [String]
+cleanPlot cleanPositions plot =  
+    [[ c    |   x <- [0..mx-1], 
+                let c' = plot !! y !! x,
+                let c = if ((c' == cDot) && (elem (x,y) cleanPositions)) then ' ' else c' ]
+            |   y <- [0..my-1]]
         where
-            nextCleared = unique $ concat $ map (\cp -> nextUncheckedTiles clearedTiles cp mxy plot) currentPositions
-            newCleared  = unique $ clearedTiles ++ nextCleared
-            clearing    = clearTiles' newCleared nextCleared mxy plot
+            (mx,my) = getGridRange plot
 
--- Work one step, from one position (cx,cy)
-nextUncheckedTiles :: [Position] -> Position -> Position -> [String] -> [Position]
-nextUncheckedTiles clearedTiles (cx,cy) (mx,my) plot =
-    [ testTile |    (x,y) <- [(-1,0),(1,0),(0,-1),(0,1)], 
-                    let dcx = cx + x,
-                    dcx >= 0 && dcx < mx,
-                    let dcy = cy + y,
-                    dcy >= 0 && dcy < my,
-                    let testTile = (dcx,dcy), 
-                    isFreeTile testTile plot, 
-                    not (elem testTile clearedTiles) ]
+floodFill :: Position -> [Position] -> [Position] -> [Position]
+floodFill maxXY interior holes 
+    | fillers == [] = holes
+    | otherwise     = floodFill maxXY fillers (fillers ++ holes)
+        where
+            fillers = filter (inRange maxXY) $ unique $ concat $ map (fillMap holes) interior
+            --
+            inRange (mx,my) (x,y)   =   x >= 0 && x < mx 
+                                    &&  y >= 0 && y < my 
 
+fillMap :: [Position] -> Position -> [Position]
+fillMap holes (cx,cy) = 
+    [ (cx+dx,cy+dy) | 
+        (dx,dy) <- [(0,-1),(0,1),(-1,0),(1,0)], 
+        not (elem (cx+dx,cy+dy) holes) ]
+
+-- This unique is 10% faster then the 'nub' from 'Data.List'
 unique :: Eq a => [a] -> [a]
-unique []     = []
-unique (e:[]) = [e]
-unique (e:rl) = [e] ++ unique (filter (/= e) rl)
-
-isFreeTile :: Position -> [String] -> Bool
-isFreeTile (x,y) plot = (plot !! y !! x) /= '#'
-
-clearPlot :: [Position] -> Position -> [String] -> [String]
-clearPlot uncheck (mx,my) plot = 
-    [[ newPlot |    x <- [0..mx-1],
-                    let newPlot = if (elem (x,y) uncheck) 
-                                    then ' ' 
-                                    else plot !! y !! x ] 
-                |   y <- [0..my-1] ]
+unique []       = []
+unique (e:es)   = [e] ++ unique (filter (/= e) es)
 
 countTiles :: ExtendedMap -> Int
-countTiles =  sum . map (length . filter (== '.'))
+countTiles =  sum . map (length . filter (== cDot))
 
 enclosedTiles :: Map -> Int
 enclosedTiles = countTiles . (clearTiles (0,0)) . extendArea3X3
@@ -259,6 +258,6 @@ main = do   putStrLn "Advent of Code 2023 - day 10 (Haskell)"
             putStr "From start to the farthest point on the loop: "
             print $ farthestSteps area            
             putStr "The number of tiles enclosed by the loop:      "
---            print $ enclosedTiles area
-            putStrLn "541 *"
+            print $ enclosedTiles area
             putStrLn "0K.\n"
+
