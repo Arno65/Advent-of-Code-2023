@@ -21,7 +21,7 @@ I tried a Clojure solution for day 8 but a 'Stack overflow' and lack of knowledg
 Day 9 has solutions in Haskell and Clojure.
 
 Day 10 and 11 have solutions in Haskell. \
-Day 10 has a very slow one for part 2. If you want to see some bad code, be my guest ;-)
+I'm NOT happy with the code for day 10. It's way too much and part 2 still has a slow sloution. But it works.
 
 Due to too much other work, I didn't have time to do some clean coding on days 12 and 13.
 
