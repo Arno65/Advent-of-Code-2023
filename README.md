@@ -27,8 +27,11 @@ Due to too much other work, I didn't have time to do some clean coding on days 1
 
 Day 14 has solutions in Haskell and Clojure.
 
-Day 15, 16 and 21 have solutions in Haskell. \
-Running a compiled version of day 21 will take many hours!
+Day 15 and 16 have solutions in Haskell. \
+
+Day 21 has solutions in Haskell and Swift. \
+Running the compiled Haskell version of day 21 will take many hours! \
+The Swift version will do the job in a few seconds.
 
 W.i.p.:\
 Both parts 2 of day 5 and 10 have very slow solutions. (There are more efficient solutions.)\
